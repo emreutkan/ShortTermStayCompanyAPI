@@ -64,4 +64,4 @@ jobs:
         id: deploy-to-webapp
         with:
           app-name: 'SE4458-22070006085'
-          package: 'release.zip'
+          slot-name: 'Production'
