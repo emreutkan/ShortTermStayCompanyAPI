@@ -9,7 +9,7 @@ COPY requirements.txt requirements.txt
 
 # Install system dependencies
 RUN apt-get update && \
-    apt-get install -y gcc g++ unixodbc-dev curl && \
+    apt-get install -y gcc g++ unixodbc-dev curl unixodbc && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
@@ -19,11 +19,11 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy the rest of the application code into the container
 COPY . .
 
-# Expose port 8000 for Flask
+# Expose port 8000 for the app
 EXPOSE 8000
 
 # Set environment variables to make the Python output unbuffered (helpful for Docker logs)
 ENV PYTHONUNBUFFERED=1
 
-# Command to run the Flask app
-CMD ["python", "app.py"]
+# Command to run the Flask app with gunicorn
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "app:app"]
